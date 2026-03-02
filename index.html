@@ -1,54 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-    <title>Prompt Builder</title>
+    <meta charset="UTF-8">
+    <title>منشئ Prompts ذكي</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
-            font-family: Arial;
-            padding: 20px;
+            font-family: Arial, sans-serif;
             background-color: #f2f2f2;
+            padding: 20px;
         }
-        input, textarea, button {
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+        input, textarea, select, button {
             width: 100%;
-            margin-top: 10px;
             padding: 10px;
+            margin-top: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
         }
         button {
             background-color: #4CAF50;
             color: white;
+            font-weight: bold;
             border: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
         }
         #result {
-            background: white;
+            background-color: #fff;
             padding: 15px;
-            margin-top: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            white-space: pre-wrap; /* للحفاظ على تنسيق الأسطر */
         }
     </style>
 </head>
 <body>
 
-<h2>Smart Prompt Builder</h2>
+<h2>منشئ Prompts ذكي</h2>
 
-<label>What is your goal?</label>
-<input type="text" id="goal" placeholder="Example: Write an essay about AI">
+<label>ما هو هدفك؟</label>
+<input type="text" id="goal" placeholder="مثال: كتابة ملخص عن الذكاء الاصطناعي">
 
-<label>Provide context:</label>
-<textarea id="context" placeholder="Example: For university level, 500 words"></textarea>
+<label>ضع السياق:</label>
+<textarea id="context" placeholder="مثال: للطلاب الجامعيين، 500 كلمة"></textarea>
 
-<button onclick="generatePrompt()">Generate Prompt</button>
+<label>اختر أسلوب الإجابة:</label>
+<select id="style">
+    <option value="احترافي">احترافي</option>
+    <option value="مبسط">مبسط</option>
+    <option value="تعليمي">تعليمي</option>
+</select>
+
+<label>اختر طول الإجابة:</label>
+<select id="length">
+    <option value="قصير">قصير</option>
+    <option value="متوسط">متوسط</option>
+    <option value="طويل">طويل</option>
+</select>
+
+<button onclick="generatePrompt()">توليد Prompt</button>
 
 <div id="result"></div>
 
 <script>
 function generatePrompt() {
-    var goal = document.getElementById("goal").value;
-    var context = document.getElementById("context").value;
+    var goal = document.getElementById("goal").value.trim();
+    var context = document.getElementById("context").value.trim();
+    var style = document.getElementById("style").value;
+    var length = document.getElementById("length").value;
 
-    var prompt = "Act as an expert.\n\n" +
-                 "Your task is: " + goal + ".\n\n" +
-                 "Context: " + context + ".\n\n" +
-                 "Provide a detailed and well-structured answer.";
+    if(goal === "" || context === "") {
+        alert("يرجى ملء جميع الحقول قبل التوليد!");
+        return;
+    }
+
+    var prompt = "تصرّف كخبير في المجال.\n\n";
+    prompt += "مهمتك: " + goal + ".\n\n";
+    prompt += "السياق: " + context + ".\n\n";
+    prompt += "الأسلوب المطلوب: " + style + ".\n";
+    prompt += "طول الإجابة: " + length + ".\n\n";
+    prompt += "قدّم إجابة مفصلة ومنظمة مع توضيح النقاط المهمة. " +
+              "حاول أن يكتسب المستخدم خبرة من قراءة هذا Prompt لتعلم كيفية صياغة Prompts بشكل أفضل.";
 
     document.getElementById("result").innerText = prompt;
 }
